@@ -1,17 +1,20 @@
+#! python3
 # run with "python3 src/carrier_api/stub.py"
 import logging
 from asyncio import sleep, create_task
 from getpass import getpass
 from pathlib import Path
+from PRIVATE import UserName, PassWord
 import sys
 
 import asyncio
 
-path_root = Path(__file__).parents[2]
-sys.path.append(str(path_root))
+#import os
+#APIlib = os.path.dirname(__file__)+"/carrier_api"
+#sys.path.append(APIlib)
+#print (APIlib)
 
-
-logger = logging.getLogger("src.carrier_api")
+logger = logging.getLogger("carrier_api")
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
@@ -20,13 +23,13 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-from src.carrier_api.api_connection_graphql import ApiConnectionGraphql
-from src.carrier_api.api_websocket_data_updater import WebsocketDataUpdater
-from src.carrier_api.const import FanModes
+from carrier_api.api_connection_graphql import ApiConnectionGraphql
+from carrier_api.api_websocket_data_updater import WebsocketDataUpdater
+from carrier_api.const import FanModes
 
 async def main():
-    username = input("username: ")
-    password = getpass()
+    username = UserName
+    password = PassWord
     api_connection = None
     try:
         api_connection = ApiConnectionGraphql(username=username, password=password)

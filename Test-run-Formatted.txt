@@ -1,0 +1,1309 @@
+First successful run of "stub":
+
+ python3 src/carrier_api/stub.py
+username: john.burgess.74@alumni.brown.edu
+Password: 
+2025-09-30 18:43:22,956 - src.carrier_api.api_connection_graphql - DEBUG - Login=john.burgess.74@alumni.brown.edu, pswd=LGR113-carrInf!
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',  # yup, thats me
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 74.0, <<<===
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,          <<<DDD
+		'is_disconnected': False,
+		'airflow_cfm': 0,           <<<===
+		'blower_rpm': 0,            <<<===
+		'static_pressure': 0.0,
+		'humidity_level': 13,       <<<DDD (humidity filter %used)
+		'humidifier_on': False,     <<<===
+		'outdoor_unit_operational_status': 'off', <<<=== or a number, representing ???
+		'indoor_unit_operational_status': 'off',  <<<=== ditto??
+		'zones': [{
+			'id': '1',     <<<??? seems to be the only one
+			'name': None,
+			'current_activity': 'home', <=====
+			'temperature': 74.0,       <<<===
+			'humidity': 54,            <<<===
+			'fan': 'off',            <<<===
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'   <<<=== (idle, active heat, )
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'away',
+				'fan': 'off',
+				'heat_set_point': 62.0,
+				'cool_set_point': 79.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {     <<<****
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1', <===DDD (Once/Day)
+			'cooling': 0, <<<DDD
+			'hp_heat': 0, <<<DDD
+			'fan': 0,     <<<DDD
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0, <<<DDD
+			'gas': 0,     <<<DDD
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025 - 09 - 30 18: 43: 24, 319 - src.carrier_api.api_connection_graphql - DEBUG - updateInfinityZoneActivity: {
+	'input': {
+		'serial': '2125W207356',
+		'zoneId': '1',
+		'activityType': 'manual',
+		'clsp': '80',
+		'htsp': '73',
+		'fan': 'low'
+	}
+}
+2025-09-30 18:43:24,327 - src.carrier_api.api_websocket - DEBUG - websocket task listening
+2025-09-30 18:43:25,027 - src.carrier_api.api_websocket - DEBUG - ws: not reconciled (websocket) missing
+2025-09-30 18:43:38,799 - src.carrier_api.api_websocket_data_updater - DEBUG - 2025-09-30 18:43:25,032 - src.carrier_api.api_websocket - DEBUG - ws: kept alive in carrier_api_ws_heartbeat:0.4582582103684478
+InfinityStatus received: {
+	"timestamp": "2025-09-30T22:43:38.195Z",
+	"updatedTime": "2025-09-30T22:43:38.195Z",
+	"odu": {
+		"oducoiltmp": 71,
+		"linevolt": 237,
+		"suctpress": 195,
+		"sucttemp": 74,
+		"suctsupheat": 0.73828125,
+		"dischargetmp": 147,
+		"dcbusvoltage": null,
+		"dischargepressure": null,
+		"dischargesuperheat": null,
+		"ipmtemperature": null,
+		"pfcmtemperature": null
+	},
+	"messageType": "InfinityStatus",
+	"deviceId": "2125W207356"
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 74.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 54,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'away',
+				'fan': 'off',
+				'heat_set_point': 62.0,
+				'cool_set_point': 79.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025-09-30 18:43:46,514 - src.carrier_api.api_websocket_data_updater - DEBUG - InfinityConfig received: {
+	"messageType": "InfinityConfig",
+	"deviceId": "2125W207356",
+	"zones": [{
+		"id": "1",
+		"activities": [{
+			"timestamp": "2025-09-30T22:43:46.201Z",
+			"id": "1",
+			"zoneConfigurationId": "1",
+			"type": "manual",
+			"htsp": 73,
+			"clsp": 80,
+			"fan": "low",
+			"fanSettingId": 1,
+			"zoneId": "1"
+		}]
+	}]
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 74.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 54,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'low',
+				'heat_set_point': 73.0,
+				'cool_set_point': 80.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025-09-30 18:43:56,503 - src.carrier_api.api_websocket_data_updater - DEBUG - InfinityStatus received: {
+	"timestamp": "2025-09-30T22:43:54.208Z",
+	"oat": 72,
+	"messageType": "InfinityStatus",
+	"deviceId": "2125W207356"
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 72.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 54,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'low',
+				'heat_set_point': 73.0,
+				'cool_set_point': 80.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025-09-30 18:44:20,033 - src.carrier_api.api_websocket - DEBUG - ws: kept alive in carrier_api_ws_heartbeat:0.4582582103684478
+2025-09-30 18:44:56,575 - src.carrier_api.api_websocket_data_updater - DEBUG - InfinityStatus received: {
+	"timestamp": "2025-09-30T22:43:54.208Z",
+	"oat": 72,
+	"messageType": "InfinityStatus",
+	"deviceId": "2125W207356"
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 72.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 54,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'low',
+				'heat_set_point': 73.0,
+				'cool_set_point': 80.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025-09-30 18:45:04,603 - src.carrier_api.api_websocket_data_updater - DEBUG - InfinityStatus received: {
+	"messageType": "InfinityStatus",
+	"deviceId": "2125W207356",
+	"zones": [{
+		"id": 1,
+		"rh": 55
+	}],
+	"timestamp": "2025-09-30T22:45:04.564Z"
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 72.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 55,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'low',
+				'heat_set_point': 73.0,
+				'cool_set_point': 80.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+2025-09-30 18:45:15,035 - src.carrier_api.api_websocket - DEBUG - ws: kept alive in carrier_api_ws_heartbeat:0.4582582103684478
+2025-09-30 18:45:22,602 - src.carrier_api.api_websocket_data_updater - DEBUG - InfinityStatus received: {
+	"timestamp": "2025-09-30T22:45:21.306Z",
+	"iah": 54,
+	"messageType": "InfinityStatus",
+	"deviceId": "2125W207356"
+}
+[{
+	'serial': '2125W207356',
+	'name': 'LGR Addition',
+	'profile': {
+		'model': 'SYSTXCCITC01-C',
+		'brand': 'Carrier',
+		'firmware': 'CESR131755-02.00',
+		'indoor_model': '59MN7C060C171114',
+		'indoor_serial': '4924A43590',
+		'indoor_unit_type': 'furnace',
+		'indoor_unit_source': 'gas',
+		'outdoor_model': '27VNA336A00301',
+		'outdoor_serial': '2725E03722     ',
+		'outdoor_unit_type': 'varcaphp'
+	},
+	'status': {
+		'outdoor_temperature': 72.0,
+		'mode': 'auto',
+		'temperature_unit': 'F',
+		'filter_used': 40,
+		'is_disconnected': False,
+		'airflow_cfm': 0,
+		'blower_rpm': 0,
+		'static_pressure': 0.0,
+		'humidity_level': 13,
+		'humidifier_on': False,
+		'outdoor_unit_operational_status': 'off',
+		'indoor_unit_operational_status': 'off',
+		'zones': [{
+			'id': '1',
+			'name': None,
+			'current_activity': 'home',
+			'temperature': 74.0,
+			'humidity': 55,
+			'fan': 'off',
+			'hold': False,
+			'occupancy': False,
+			'hold_until': None,
+			'heat_set_point': 69.0,
+			'cool_set_point': 77.0,
+			'conditioning': 'idle'
+		}]
+	},
+	'config': {
+		'temperature_unit': 'F',
+		'mode': 'auto',
+		'heat_source': 'system',
+		'zones': [{
+			'api_id': '1',
+			'name': 'Addition',
+			'current_activity': {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			},
+			'hold_activity': None,
+			'hold': False,
+			'hold_until': None,
+			'occupancy_enabled': False,
+			'activities': [{
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'low',
+				'heat_set_point': 73.0,
+				'cool_set_point': 80.0
+			}, {
+				'api_id': '1',
+				'type': 'home',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 77.0
+			}, {
+				'api_id': '1',
+				'type': 'manual',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 75.0
+			}, {
+				'api_id': '1',
+				'type': 'sleep',
+				'fan': 'off',
+				'heat_set_point': 67.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': '1',
+				'type': 'wake',
+				'fan': 'off',
+				'heat_set_point': 69.0,
+				'cool_set_point': 76.0
+			}, {
+				'api_id': None,
+				'type': 'vacation',
+				'fan': 'off',
+				'heat_set_point': 60.0,
+				'cool_set_point': 82.0
+			}]
+		}]
+	},
+	'energy': {
+		'seer': 15.0,
+		'hspf': 8.80078125,
+		'cooling': True,
+		'hp_heat': True,
+		'fan': True,
+		'electric_heat': False,
+		'reheat': False,
+		'fan_gas': True,
+		'gas': True,
+		'loop_pump': False,
+		'periods': [{
+			'id': 'day1',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'day2',
+			'cooling': 1,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month1',
+			'cooling': 33,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'month2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year1',
+			'cooling': 38,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}, {
+			'id': 'year2',
+			'cooling': 0,
+			'hp_heat': 0,
+			'fan': 0,
+			'electric_heat': 0,
+			'reheat': 0,
+			'fan_gas': 0,
+			'gas': 0,
+			'loop_pump': 0
+		}]
+	}
+}]
+. . .
+2025-09-30 18:48:55,041 - src.carrier_api.api_websocket - DEBUG - ws: kept alive in carrier_api_ws_heartbeat:0.4582582103684478
+
+^C2025-09-30 18:49:13,772 - src.carrier_api.api_websocket - DEBUG - websocket task cancelled
+(I hit CTL-C)
+ 

@@ -21,7 +21,7 @@ from .system import System
 from .api_websocket import ApiWebsocket
 
 _LOGGER = logging.getLogger(__name__)
-_LOGGER.setLevel(logging.DEBUG)
+#_LOGGER.setLevel(logging.DEBUG)
 
 class ApiConnectionGraphql:
     expires_at: datetime = datetime.now()

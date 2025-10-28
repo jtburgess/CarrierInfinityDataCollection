@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-parse_sensor_to_dict.py
+parseArduinoToDict.py
 
-Read a sensor-style CSV and return a mapping from NAME -> row-by-column-name
+Read CSV from my Arduino sensor and return a mapping from NAME -> row-by-column-name
 so you can do things like:
 
-    rows = parse_sensor_csv_to_map(open("input.csv"))
+    rows = parseArduinoToDict(open("input.csv"))
     print(rows["Inside"]["LAST"])
 
 sample data:
@@ -24,14 +24,14 @@ Behavior:
 - Can read from a filename or stdin when used as a script; prints JSON output.
 
 Usage (as library):
-    from parse_sensor_to_dict import parse_sensor_csv_to_map
+    from parseArduinoToDict import parseArduinoToDict
     with open("input.csv", newline="") as f:
-        rows_map = parse_sensor_csv_to_map(f)
+        rows_map = parseArduinoToDict(f)
     print(rows_map["Inside"]["LAST"])
 
 Usage (CLI):
-    python3 parse_sensor_to_dict.py input.csv
-    cat input.csv | python3 parse_sensor_to_dict.py
+    python3 parseArduinoToDict.py [-d][-n] [input.csv - or stdin]
+    cat input.csv | python3 parseArduinoToDict.py
 """
 
 from __future__ import annotations
@@ -41,7 +41,6 @@ import json
 from typing import Dict, Any, IO, Union
 
 import logging
-logger = logging.getLogger(__name__)
 
 
 def _to_number_if_possible(s: str) -> Union[int, float, str]:
@@ -61,7 +60,7 @@ def _to_number_if_possible(s: str) -> Union[int, float, str]:
         return s
 
 
-def parse_sensor_csv_to_map( fileobj: IO[str] ) -> Dict[str, Any]:
+def parseArduinoToDict( fileobj: IO[str], forceNumbers: bool = False ) -> Dict[str, Any]:
     """
     Parse a CSV from fileobj and return a mapping: NAME -> row-dict (keys uppercase).
     ASSUME Name is first column, first row is UPPER_CASE field names
@@ -73,15 +72,17 @@ def parse_sensor_csv_to_map( fileobj: IO[str] ) -> Dict[str, Any]:
     except StopIteration:
         return {}
 
-    header = [h.strip() for h in header_row]
+    header = [h.strip().upper() for h in header_row]
 
     # Find NAME column (case-insensitive). If not present, assume first column is NAME.
     name_idx = None
     for i, h in enumerate(header):
         if h == "NAME":
             name_idx = i
+            logging.debug("NAME is col %d" % name_idx)
             break
     if name_idx is None:
+        logging.debug("NAME not found - forcing to col 0")
         name_idx = 0
         # Prepend NAME to header so mapping keys remain consistent
         # but we will keep the original header columns as-is (we assume first column is name).
@@ -93,8 +94,10 @@ def parse_sensor_csv_to_map( fileobj: IO[str] ) -> Dict[str, Any]:
     # Ensure header length reflects columns we expect for mapping; we'll map by index.
     # Process each row: pad with "" if short, truncate if long.
     result: Dict[str, Any] = {}
+    logging.debug("result len before: %s" % len(result))
 
     for row in reader:
+        logging.debug("read row: %s" % row)
         row = [c.strip() for c in row]
         # pad or truncate to header length
         if len(row) < len(header):
@@ -105,11 +108,12 @@ def parse_sensor_csv_to_map( fileobj: IO[str] ) -> Dict[str, Any]:
             extra_count = len(row) - len(header)
             for i in range(extra_count):
                 header.append(f"EXTRA_{i}")
+
         # Build row dict keyed by uppercase header names
         row_dict: Dict[str, Any] = {}
         for i, val in enumerate(row[: len(header)]):
             key = header[i]
-            row_dict[key] = _to_number_if_possible(val)
+            row_dict[key] = _to_number_if_possible(val) if forceNumbers else val
 
         # Determine name key (preserve the actual NAME cell value as the lookup key)
         name_value = row[name_idx].strip() if name_idx < len(row) else ""
@@ -128,39 +132,47 @@ def parse_sensor_csv_to_map( fileobj: IO[str] ) -> Dict[str, Any]:
             else:
                 result[name_value] = [existing, row_dict]
 
+    logging.debug("result len after: %s" % len(result))
     return result
 
 
+##########
+# this is just for testing / debugging the above functions
 def main():
     import argparse
     parser = argparse.ArgumentParser(
         description="Collect data from Arduino temp sensor(s)."
     )
-    # Example argument; add more as needed
+
     parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
+    parser.add_argument( "-n", "--numeric", action="store_true", help="force numbers in output dict" )
     parser.add_argument('file', nargs='*', help="name of CSV data file to use")
     args = parser.parse_args()
 
     if args.debug:
-        print("Debug mode enabled.")
-        logger.setLevel(logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
+        logging.debug("Debug mode enabled.")
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    if len(args.file) > 1:
+        parser.error("Only one file argument accepted")
 
     if len(args.file) == 1:
-        logger.debug("reading CSV data from: %s" % args.file[0])
+        logging.debug("reading CSV data from: %s" % args.file[0])
         infile = open(args.file[0], newline="")
-    elif len(args.file) == 0:
-        logger.debug("reading CSV data from stdin")
-        infile = sys.stdin
     else:
-        print ("Only one file arg accepted")
+        logging.debug("reading CSV data from stdin")
+        infile = sys.stdin
 
-    rows_map = parse_sensor_csv_to_map(infile)
-    # Write JSON to stdout for easy inspection
-    print (json.dump(rows_map, sys.stdout, indent=2, ensure_ascii=False))
-    sys.stdout.write("\n")
-
-    if infile is not sys.stdin:
-        infile.close()
+    try:
+        rows_map = parseArduinoToDict(infile, args.numeric)
+        # Write JSON to stdout for easy inspection. Use json.dump (it writes to stdout).
+        json.dump(rows_map, sys.stdout, indent=2, ensure_ascii=False)
+        sys.stdout.write("\n")
+    finally:
+        if infile is not sys.stdin:
+            infile.close()
     return 0
 
 if __name__ == "__main__":

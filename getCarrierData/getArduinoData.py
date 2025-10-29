@@ -1,5 +1,6 @@
 #!python3
 import argparse
+import datetime
 import io
 import json
 import logging
@@ -44,6 +45,61 @@ map100 = [
   [ '%Humidity', 'Lhumidity' ],
 ]
 
+def remapFields (map: list, ip: str, sensor_dict: Dict) -> Dict:
+    temp_data = {}
+    for field in map:
+      # logging.debug("field = %s a (%s)" % (field, type(field)))
+      try:
+        logging.debug ("Map field %s to %s = %s" % (field[0], field[1], sensor_dict[field[0]]['LAST']))
+        temp_data.__setitem__(field[1], sensor_dict[field[0]]['LAST'])
+      except:
+        logging.warning("device %s is missing %s" % (ip, field[0]))
+    return temp_data
+
+def getArduinoData(args) -> Dict:
+    collected_data = {}
+    today = str(datetime.date.today())
+    collected_data.__setitem__ ("DATE", today)
+    now = datetime.datetime.now().strftime('%H:%M:%S')
+    collected_data.__setitem__ ("TIME", now)
+
+    if args.file:
+        logging.debug("reading CSV data from: %s" % args.file[0])
+        infile = open(args.file, newline="")
+        sensor_dict = parseArduinoToDict (infile)
+        # don't know which map to use so assume LGR
+        collected_data.update(remapFields (map100, "file", sensor_dict))
+    else:
+        # no file means read the live data from arduino
+        logging.debug("reading CSV data from the sensors on the netqork")
+        if args.ipaddr:
+          sensor_ips = args.ipaddr # its a list of one
+        else:
+          sensor_ips = [ '192.168.0.98', '192.168.0.100' ]
+
+        for ip in sensor_ips:
+          url = 'http://' + ip + '/getRawData'
+          logging.debug (url)
+          sensor_dict = parseArduinoToDict (getWebFileObj(url))
+          logging.debug (json.dumps (sensor_dict, indent=2, ensure_ascii=False))
+
+          # logging.debug("got sensor_dict: %s a (%s)" % (sensor_dict, type(sensor_dict)))
+
+          # now extract the current (LAST) values for selected NAMEs
+          # yes these are hard-coded IP addresses. This is only intended for, and will only work in one place.
+          if ip == '192.168.0.98':
+            map = map98
+          elif ip == '192.168.0.100':
+            map = map100
+          else:
+            log.error( "no field map exists for %" % ip)
+            map = []
+          collected_data.update(remapFields (map, ip, sensor_dict))
+
+    return collected_data
+
+##########
+# this is just for testing / debugging the above functions
 def main():
     import argparse
     parser = argparse.ArgumentParser( prog='PROG',
@@ -62,47 +118,14 @@ def main():
         logging.basicConfig(level=logging.INFO)
 
     logging.debug ("Args=[ %s ]" % args)
-    if args.file and len(args.file) > 1:
+    if isinstance(args.file, (type(None), str)) is False:
         parser.error("Only one file argument accepted")
 
-    if args.file and len(args.file) == 1:
-        logging.debug("reading CSV data from: %s" % args.file[0])
-        infile = open(args.file[0], newline="")
-        sensor_dict = parseArduinoToDict (infile)
-    else:
-        # no file means read the live data from arduino
-        logging.debug("reading CSV data from the sensors on the netqork")
-        if args.ipaddr:
-          sensor_ips = args.ipaddr # its a list of one
-        else:
-          sensor_ips = [ '192.168.0.98', '192.168.0.100' ]
+    collected_data = getArduinoData(args)
 
-        collected_data = {}
-        for ip in sensor_ips:
-          url = 'http://' + ip + '/getRawData'
-          logging.debug (url)
-          sensor_dict = parseArduinoToDict (getWebFileObj(url))
-          # logging.debug("got sensor_dict: %s a (%s)" % (sensor_dict, type(sensor_dict)))
-
-          # now extract the current (LAST) values for selected NAMEs
-          if ip == '192.168.0.98':
-            map = map98
-          elif ip == '192.168.0.100':
-            map = map100
-          else:
-            log.error( "no field map exists for %" % ip)
-            map = []
-          for field in map:
-            # logging.debug("field = %s a (%s)" % (field, type(field)))
-            try:
-              logging.debug ("Map field %s to %s = %s" % (field[0], field[1], sensor_dict[field[0]]['LAST']))
-              collected_data.__setitem__(field[1], sensor_dict[field[0]]['LAST'])
-            except:
-              logging.warning("device %s is missing %s" % (ip, field[0]))
-
-    json.dump (sensor_dict, stdout, indent=2, ensure_ascii=False)
-    print("\nresulted in\n")
+    print("\nresulted in")
     json.dump (collected_data, stdout, indent=2, ensure_ascii=False)
+    print("\n")
     exit(0)
 
 

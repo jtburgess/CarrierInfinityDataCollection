@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import logging
+from logging import getLogger
 from typing import Any, Literal
 
 from aiohttp import ClientSession
@@ -20,7 +20,7 @@ from .errors import AuthError
 from .system import System
 from .api_websocket import ApiWebsocket
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = getLogger(__name__)
 #_LOGGER.setLevel(logging.DEBUG)
 
 class ApiConnectionGraphql:
@@ -394,9 +394,8 @@ class ApiConnectionGraphql:
             mutation updateInfinityConfig($input: InfinityConfigInput!) {
                 updateInfinityConfig(input: $input) {
                     etag
-                    }
                 }
-            )
+            }
             """
         )
         _LOGGER.debug(f"updateInfinityConfig: {variables}")

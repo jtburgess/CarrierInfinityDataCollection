@@ -59,7 +59,6 @@ def _to_number_if_possible(s: str) -> Union[int, float, str]:
         # float and/or int conversion failed
         return s
 
-
 def parseArduinoToDict( fileobj: IO[str], forceNumbers: bool = False ) -> Dict[str, Any]:
     """
     Parse a CSV from fileobj and return a mapping: NAME -> row-dict (keys uppercase).

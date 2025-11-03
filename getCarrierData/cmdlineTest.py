@@ -2,7 +2,7 @@
 # run with "python3 src/carrier_api/stub.py"
 import asyncio
 import logging
-from asyncio import sleep, create_task
+from asyncio import sleep, create_task, run
 from PRIVATE import UserName, PassWord
 
 """

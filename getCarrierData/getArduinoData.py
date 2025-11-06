@@ -45,13 +45,17 @@ map100 = [
   [ '%Humidity', 'Lhumidity' ],
 ]
 
-def remapFields (map: list, ip: str, sensor_dict: Dict) -> Dict:
+def remapFields (isRealTime: bool, map: list, ip: str, sensor_dict: Dict) -> Dict:
     temp_data = {}
     for field in map:
       # logging.debug("field = %s a (%s)" % (field, type(field)))
       try:
         logging.debug ("Map field %s to %s = %s" % (field[0], field[1], sensor_dict[field[0]]['LAST']))
-        temp_data.__setitem__(field[1], sensor_dict[field[0]]['LAST'])
+        if isRealTime:
+          temp_data.__setitem__(field[1], sensor_dict[field[0]]['LAST'])
+        else:
+          temp_data.__setitem__(field[1]+"Avg", sensor_dict[field[0]]['AVG'])
+          temp_data.__setitem__(field[1]+"MinMax", sensor_dict[field[0]]['MIN'] + '-' + sensor_dict[field[0]]['MAX'])
       except:
         logging.warning("device %s is missing %s" % (ip, field[0]))
     return temp_data
@@ -60,15 +64,18 @@ def getArduinoData(args) -> Dict:
     collected_data = {}
     today = str(datetime.date.today())
     collected_data.__setitem__ ("DATE", today)
-    now = datetime.datetime.now().strftime('%H:%M:%S')
-    collected_data.__setitem__ ("TIME", now)
+    if args.realtime:
+        now = datetime.datetime.now().strftime('%H:%M:%S')
+        collected_data.__setitem__ ("TIME", now)
+    else:
+        collected_data.__setitem__ ("TIME", "Daily")
 
     if args.file:
         logging.debug("reading CSV data from: %s" % args.file[0])
         infile = open(args.file, newline="")
         sensor_dict = parseArduinoToDict (infile)
         # don't know which map to use so assume LGR
-        collected_data.update(remapFields (map100, "file", sensor_dict))
+        collected_data.update(remapFields(args.realtime, map100, "file", sensor_dict))
     else:
         # no file means read the live data from arduino
         logging.debug("reading CSV data from the sensors on the netqork")
@@ -94,7 +101,7 @@ def getArduinoData(args) -> Dict:
           else:
             log.error( "no field map exists for %" % ip)
             map = []
-          collected_data.update(remapFields (map, ip, sensor_dict))
+          collected_data.update(remapFields(args.realtime, map, ip, sensor_dict))
 
     return collected_data
 
@@ -109,6 +116,8 @@ def main():
     parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
     parser.add_argument('file', nargs='?', help="name of CSV data file to use")
     parser.add_argument("-i", "--ipaddr", nargs=1, type=isIPaddr)
+    parser.add_argument( "-R", "--realtime", action="store_true", help="get the realtime fields" )
+    parser.add_argument( "-D", "--daily", action="store_true", help="get the Daily Fields" )
     args = parser.parse_args()
 
     if args.debug:
@@ -121,8 +130,11 @@ def main():
     if isinstance(args.file, (type(None), str)) is False:
         parser.error("Only one file argument accepted")
 
-    collected_data = getArduinoData(args)
+    if not (args.realtime or args.daily):
+        logging.error ("You must specify either --realtime or --daily")
+        exit(1)
 
+    collected_data = getArduinoData(args)
     print("\nresulted in")
     json.dump (collected_data, stdout, indent=2, ensure_ascii=False)
     print("\n")

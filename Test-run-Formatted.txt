@@ -19,7 +19,7 @@ Password:
 		'outdoor_serial': '2725E03722     ',
 		'outdoor_unit_type': 'varcaphp'
 	},
-	'status': {
+	'status': {           <<<DDD   <<<===
 		'outdoor_temperature': 74.0, <<<===
 		'mode': 'auto',
 		'temperature_unit': 'F',
@@ -32,13 +32,13 @@ Password:
 		'humidifier_on': False,     <<<===
 		'outdoor_unit_operational_status': 'off', <<<=== or a number, representing ???
 		'indoor_unit_operational_status': 'off',  <<<=== ditto??
-		'zones': [{
+		'zones': [{                 <<<===
 			'id': '1',     <<<??? seems to be the only one
 			'name': None,
-			'current_activity': 'home', <=====
+			'current_activity': 'home', <<<===
 			'temperature': 74.0,       <<<===
 			'humidity': 54,            <<<===
-			'fan': 'off',            <<<===
+			'fan': 'off',              <<<===
 			'hold': False,
 			'occupancy': False,
 			'hold_until': None,
@@ -104,7 +104,7 @@ Password:
 			}]
 		}]
 	},
-	'energy': {     <<<****
+	'energy': {     <<<DDD
 		'seer': 15.0,
 		'hspf': 8.80078125,
 		'cooling': True,
@@ -116,7 +116,7 @@ Password:
 		'gas': True,
 		'loop_pump': False,
 		'periods': [{
-			'id': 'day1', <===DDD (Once/Day)
+			'id': 'day1', <<<DDD (Once/Day)
 			'cooling': 0, <<<DDD
 			'hp_heat': 0, <<<DDD
 			'fan': 0,     <<<DDD
@@ -124,7 +124,7 @@ Password:
 			'reheat': 0,
 			'fan_gas': 0, <<<DDD
 			'gas': 0,     <<<DDD
-			'loop_pump': 0
+			'loop_pump': 0 <<<DDD
 		}, {
 			'id': 'day2',
 			'cooling': 1,

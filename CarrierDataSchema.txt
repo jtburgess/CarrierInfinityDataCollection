@@ -5,25 +5,26 @@
 #   T ==Test arduino sensor
 #   I = inside, O=Outside
 
-Date, Time,
-LItemp, TItemp, LOtemp, Lhumidity, Thumidity,
-outdoor_temperature,
+'Date', 'Time',
+'LItemp', 'TItemp', 'LOtemp', 'Lhumidity', 'Thumidity',
+
 ['status']
-  airflow_cfm, humidifier_on, outdoor_unit_operational_status,
-  indoor_unit_operational_status,
+  'outdoor_temperature',
+  'airflow_cfm', 'blower_rpm', 'humidifier_on', 
+  'outdoor_unit_operational_status', 'indoor_unit_operational_status',
   [zones][id] == 1  (and only?)
-    temperature, humidity,
-    current_activity, conditioning, fan,
+    'temperature', 'humidity',
+    'current_activity', 'conditioning', 'fan',
 
 
 # Combined DAILY collection items
 #    min/max from arduino
 #    total "energy" "day1" from carrier
-#    get them all, lacking info on what's what
+#    get everything that looks useful, lacking info on what's what
 #  what else
-Date,
-LItempMin/Max, TItempMin/Max, LOtempMin/Max,
-LhumidMin/Max, ThumidMin/Max,
+Date, (Time=Daily)
+LItempAvg, LItempMinMax, TItempAvg, TItempMinMax, LOtempAvg, LOtempMinMax,
+LhumidAvg, LhumidMinMax, ThumidAvg, ThumidMinMax,
 cooling, hp_heat, fan, electric_heat,
 reheat, fan_gas, gas, loop_pump,
 filter_used, humidity_level

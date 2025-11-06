@@ -18,6 +18,10 @@ async def getCarrierData(args) -> Dict[str, Any]:
     password = PassWord
     api_connection = None
     systems = {}
+
+    logger = logging.getLogger("gql.transport.aiohttp")
+    logger.setLevel("WARNING") # the gql.transport.aiohttp logs a lot at INFO
+
     try:
         api_connection = ApiConnectionGraphql(username=username, password=password)
         systems = await api_connection.load_data()
@@ -32,13 +36,19 @@ async def getCarrierData(args) -> Dict[str, Any]:
 
 # select the fields we want to record on an hourly (RealTime) basis from the larger carrier dictionary
 status_fields = [
-  'outdoor_temperature',
-  'airflow_cfm', 'blower_rpm', 'humidifier_on',
-  'outdoor_unit_operational_status', 'indoor_unit_operational_status',
+  [ 'outdoor_temperature', 'out_temp' ],
+  [ 'airflow_cfm', 'airflow_cfm' ],
+  [ 'blower_rpm', 'blower_rpm' ],
+  [ 'humidifier_on', 'humidifier_on' ],
+  [ 'outdoor_unit_operational_status', 'outdoor_status' ],
+  [ 'indoor_unit_operational_status', 'indoor_status' ],
 ]
 zone_fields = [
-  'current_activity', 'conditioning',
-  'temperature', 'humidity', 'fan',
+  [ 'current_activity', 'hp_profile' ],
+  [ 'conditioning', 'conditioning' ],
+  [ 'temperature', 'in_temp' ],
+  [ 'humidity', 'humidity' ],
+  [ 'fan', 'fan' ],
 ]
 
 def selectRealTimeData(collected_data : Dict[str, Any]) -> Dict[str, Any]:
@@ -51,29 +61,34 @@ def selectRealTimeData(collected_data : Dict[str, Any]) -> Dict[str, Any]:
     status = collected_data['status']
     for field in status_fields:
         try:
-          selected_data.__setitem__ (field, status[field])
+          selected_data.__setitem__ (field[1], status[field[0]])
         except:
-          logging.warning("carrier status is missing %s" % (field))
+          logging.warning("carrier status is missing %s" % (field[0]))
 
     zone = status['zones'][0]
     for field in zone_fields:
         try:
-          selected_data.__setitem__ (field, zone[field])
+          selected_data.__setitem__ (field[1], zone[field[0]])
         except:
-          logging.warning("carrier status-zone is missing %s" % (field))
+          logging.warning("carrier status-zone is missing %s" % (field[0]))
 
     return selected_data
 
 # select the data that only is available on a Daily basis
-daily_status_fields = {
-  'filter_used',
-  'humidity_level',
-}
-daily_energy_fields = {
-  'id', 'cooling', 'hp_heat', 'fan',
-  'gas', 'fan_gas'
-
-}
+daily_status_fields = [
+  [ 'filter_used', 'hp_filter%' ],
+  [ 'humidity_level', 'humid_filter%' ],
+]
+# ['energy']['periods'][0]
+daily_energy_fields = [
+  [ 'id', 'id' ],
+  [ 'cooling', 'cool_btu' ],
+  [ 'hp_heat', 'heat_btu' ],
+  [ 'fan', 'hp_fan' ],
+  [ 'gas', 'furnace_btu' ],
+  [ 'fan_gas', 'furnace_fan' ],
+  [ 'loop_pump', 'loop_pump' ],
+]
 def selectDailyData(collected_data : Dict[str, Any]) -> Dict[str, Any]:
     selected_data = {}
     today = str(datetime.date.today())
@@ -84,14 +99,14 @@ def selectDailyData(collected_data : Dict[str, Any]) -> Dict[str, Any]:
     status = collected_data['status']
     for field in daily_status_fields:
         try:
-          selected_data.__setitem__ (field, status[field])
+          selected_data.__setitem__ (field[1], status[field[0]])
         except:
           logging.warning("carrier status is missing %s" % (field))
 
-    energy = collected_data['energy']
+    energy = collected_data['energy']['periods'][0]
     for field in daily_energy_fields:
         try:
-          selected_data.__setitem__ (field, energy[field])
+          selected_data.__setitem__ (field[1], energy[field[0]])
         except:
           logging.warning("carrier energy is missing %s" % (field))
 
@@ -117,7 +132,6 @@ async def main():
         logging.debug("Debug mode enabled.")
     else:
         logging.basicConfig(level=logging.WARN)
-
     logging.debug ("Args=[ %s ]" % args)
 
     getDataTask = asyncio.create_task (getCarrierData(args))
@@ -136,15 +150,16 @@ async def main():
 
     if args.raw:
         #print (str(collected_data) + '\n')
-        json.dump (collected_data, stdout, indent=2, ensure_ascii=False)
+        selected_data = collected_data
     elif args.realtime:
         selected_data = selectRealTimeData(collected_data.__repr__())
-        json.dump (selected_data, stdout, indent=2, ensure_ascii=False)
     elif args.daily:
         selected_data = selectDailyData(collected_data.__repr__())
-        json.dump (selected_data, stdout, indent=2, ensure_ascii=False)
     else:
         logging.error ("You must specify either --raw, --realtime or --daily")
+        exit(1)
+
+    json.dump (selected_data, stdout, indent=2, ensure_ascii=False)
     print ("\n")
     exit(0)
 

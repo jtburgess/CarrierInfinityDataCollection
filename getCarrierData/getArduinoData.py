@@ -70,7 +70,7 @@ def getArduinoData(args) -> Dict:
     else:
         collected_data.__setitem__ ("TIME", "Daily")
 
-    if args.file:
+    if "file" in args and args.file:
         logging.debug("reading CSV data from: %s" % args.file[0])
         infile = open(args.file, newline="")
         sensor_dict = parseArduinoToDict (infile)
@@ -79,7 +79,7 @@ def getArduinoData(args) -> Dict:
     else:
         # no file means read the live data from arduino
         logging.debug("reading CSV data from the sensors on the netqork")
-        if args.ipaddr:
+        if "ipaddr" in args and args.ipaddr:
           sensor_ips = args.ipaddr # its a list of one
         else:
           sensor_ips = [ '192.168.0.98', '192.168.0.100' ]
@@ -125,8 +125,8 @@ def main():
         logging.debug("Debug mode enabled.")
     else:
         logging.basicConfig(level=logging.INFO)
-
     logging.debug ("Args=[ %s ]" % args)
+
     if isinstance(args.file, (type(None), str)) is False:
         parser.error("Only one file argument accepted")
 

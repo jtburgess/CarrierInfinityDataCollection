@@ -1,7 +1,7 @@
 # CarrierInfinityDataCollection
 Project to download data from my Carrier Infinity Heat Pump
-and also from my arduino temp sensor.
-Save data in csv, or maybe excel.
-other functions, TBD
+and also from my arduino temp sensor(s).
+Save data as json.
+both "realtime" (hourly or more frequent collection)
 
-Start by using https://github.com/dahlb/carrier_api
+Started by using https://github.com/dahlb/carrier_api

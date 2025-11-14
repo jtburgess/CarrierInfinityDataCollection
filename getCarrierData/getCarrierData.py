@@ -157,7 +157,7 @@ async def main():
     else:
         # just want the data. I only have one system
         collected_data = collected_data[0] #.__repr__()
-    
+
     if args.debug:
         # write the raw collected data to a file for comparison
         f = open("carrier_collected_data", "w")

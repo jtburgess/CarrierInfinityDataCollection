@@ -6,7 +6,7 @@ import json
 import logging
 import re
 import requests
-from sys import exit, stdout
+from sys import exit, stdout, exc_info
 from typing import Dict, IO
 from parseArduinoToDict import parseArduinoToDict
 
@@ -84,24 +84,29 @@ def getArduinoData(args) -> Dict:
         else:
           sensor_ips = [ '192.168.0.98', '192.168.0.100' ]
 
-        for ip in sensor_ips:
-          url = 'http://' + ip + '/getRawData'
-          logging.debug (url)
-          sensor_dict = parseArduinoToDict (getWebFileObj(url))
-          logging.debug (json.dumps (sensor_dict, indent=2, ensure_ascii=False))
+        try:
+            for ip in sensor_ips:
+                url = 'http://' + ip + '/getRawData'
+                logging.debug (url)
+                sensor_dict = parseArduinoToDict (getWebFileObj(url))
+                logging.debug (json.dumps (sensor_dict, indent=2, ensure_ascii=False))
 
-          # logging.debug("got sensor_dict: %s a (%s)" % (sensor_dict, type(sensor_dict)))
+                # logging.debug("got sensor_dict: %s a (%s)" % (sensor_dict, type(sensor_dict)))
 
-          # now extract the current (LAST) values for selected NAMEs
-          # yes these are hard-coded IP addresses. This is only intended for, and will only work in one place.
-          if ip == '192.168.0.98':
-            map = map98
-          elif ip == '192.168.0.100':
-            map = map100
-          else:
-            log.error( "no field map exists for %" % ip)
-            map = []
-          collected_data.update(remapFields(args.realtime, map, ip, sensor_dict))
+                # now extract the current (LAST) values for selected NAMEs
+                # yes these are hard-coded IP addresses. This is only intended for, and will only work in one place.
+                if ip == '192.168.0.98':
+                    map = map98
+                elif ip == '192.168.0.100':
+                    map = map100
+                else:
+                    log.error( "no field map exists for %" % ip)
+                    map = []
+                collected_data.update(remapFields(args.realtime, map, ip, sensor_dict))
+        except:
+            excType, excValue, excTraceback = exc_info()
+            logging.error ("EXCEPTION: excType=%s, excValue=%s, excTraceback=%s" % (excType, excValue, excTraceback))
+
 
     return collected_data
 

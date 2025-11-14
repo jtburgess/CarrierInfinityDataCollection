@@ -5,13 +5,22 @@ import argparse
 import datetime
 import json
 import logging
-from sys import exit, stdout
+from sys import exit, stdout, exc_info
 from PRIVATE import UserName, PassWord
 from typing import Any, Dict
 
 from carrier_api.api_connection_graphql import ApiConnectionGraphql
 from carrier_api.api_websocket_data_updater import WebsocketDataUpdater
 from carrier_api.const import FanModes
+
+def traceBack():
+    import traceback
+    """return a traceback in a variable"""
+    # from sys import exc_info
+    excType, excValue, excTraceback = exc_info()
+    logging.error ("EXCEPTION: excType=%s, excValue=%s, excTraceback=%s" % (excType, excValue, excTraceback))
+    lines = traceback.format_exception(excType, excValue, excTraceback)
+    logging.debug( "".join( lines ))
 
 async def getCarrierData(args) -> Dict[str, Any]:
     username = UserName
@@ -21,13 +30,18 @@ async def getCarrierData(args) -> Dict[str, Any]:
 
     logger = logging.getLogger("gql.transport.aiohttp")
     logger.setLevel("WARNING") # the gql.transport.aiohttp logs a lot at INFO
+    #logger.setLevel("DEBUG") # the gql.transport.aiohttp logs a lot at INFO
 
     try:
         api_connection = ApiConnectionGraphql(username=username, password=password)
         systems = await api_connection.load_data()
         logging.debug("API connected. %d systems\n" % (len(systems)))
-        for system in systems:
-            logging.debug( json.dumps(system, sort_keys=True, indent=2, separators=(',', ': ')) )
+        if args.debug:
+            for system in systems:
+                logging.debug( json.dumps(system.__repr__(), sort_keys=True, indent=2, separators=(',', ': ')) )
+    except:
+        # ApiConnection just fails silently when it gets an error, so I added this.
+        traceBack()
     finally:
         logging.debug ("Finally!")
         if api_connection is not None:
@@ -143,10 +157,12 @@ async def main():
     else:
         # just want the data. I only have one system
         collected_data = collected_data[0] #.__repr__()
-    # write the raw collected data to a file for comparison
-    f = open("carrier_collected_data", "w")
-    f.write (str(collected_data) + '\n')
-    f.close ()
+    
+    if args.debug:
+        # write the raw collected data to a file for comparison
+        f = open("carrier_collected_data", "w")
+        f.write (str(collected_data) + '\n')
+        f.close ()
 
     if args.raw:
         #print (str(collected_data) + '\n')

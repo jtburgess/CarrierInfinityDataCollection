@@ -43,7 +43,7 @@ async def main():
     ##### this is the business logic
     if args.realtime:
         logging.info("running Carrier Realtime Data collection")
-        output_file = "CarrierRealTimeData.json"
+        output_file = "../CarrierRealTimeData.json"
         # since the Carrier login is async, I can do the arduino collection while waiting
         getDataTask = asyncio.create_task (getCarrierData(args))
 
@@ -57,7 +57,7 @@ async def main():
         carrier_data = selectRealTimeData(carrier_data[0].__repr__())
     elif args.daily:
         logging.info("running Carrier Daily Data collection")
-        output_file = "CarrierDailyData.json"
+        output_file = "../CarrierDailyData.json"
         # Carrier provides data for YESTERDAY. so wait to collect it until the next day
         # and assume the cron is run at about 23:59
         arduino_data = getArduinoData(args)
@@ -83,8 +83,9 @@ async def main():
         logging.error ("You must specify either --realtime or --daily")
         exit(1)
 
-    logging.debug ("arduino data: " + str(arduino_data))
-    logging.debug ("selected carrier data: " + str(carrier_data))
+    if args.debug:
+        logging.debug ("arduino data: " + str(arduino_data))
+        logging.debug ("selected carrier data: " + str(carrier_data[0].__repr__()))
 
     collected_data = {**arduino_data, **carrier_data}
     logging.debug ("combined data: " + str(collected_data))

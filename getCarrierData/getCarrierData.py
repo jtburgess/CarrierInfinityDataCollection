@@ -36,8 +36,9 @@ async def getCarrierData(args) -> Dict[str, Any]:
         api_connection = ApiConnectionGraphql(username=username, password=password)
         systems = await api_connection.load_data()
         logging.debug("API connected. %d systems\n" % (len(systems)))
-        for system in systems:
-            logging.debug( json.dumps(system, sort_keys=True, indent=2, separators=(',', ': ')) )
+        if args.debug:
+            for system in systems:
+                logging.debug( json.dumps(system.__repr__(), sort_keys=True, indent=2, separators=(',', ': ')) )
     except:
         # ApiConnection just fails silently when it gets an error, so I added this.
         traceBack()

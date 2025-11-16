@@ -1,3 +1,3 @@
 # MM HH DD MON DOW command ...
 17,47 * * * * cd ~/Dropbox/CarrierDataCollection/getCarrierData; export PATH=/Library/Frameworks/Python.framework/Versions/3.13/bin:A$PATH; export SSL_CERT_FILE=$(python3 -m certifi); python3 ./carrierDataCron.py -R >> ../carrier_cron.log 2>&1
-59 23 * * * cd ~/Dropbox/CarrierDataCollection/getCarrierData; export PATH=/Library/Frameworks/Python.framework/Versions/3.13/bin:A$PATH; export SSL_CERT_FILE=$(python3 -m certifi); python3 ./carrierDataCron.py -T >> ../carrier_cron.log 2>&1
+59 23 * * * cd ~/Dropbox/CarrierDataCollection/getCarrierData; export PATH=/Library/Frameworks/Python.framework/Versions/3.13/bin:A$PATH; export SSL_CERT_FILE=$(python3 -m certifi); python3 ./carrierDataCron.py -D >> ../carrier_cron.log 2>&1

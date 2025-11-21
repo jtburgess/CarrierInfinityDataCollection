@@ -41,14 +41,13 @@ async def main():
     logging.debug ("Args=[ %s ]" % args)
 
     ##### this is the business logic
+    arduino_data = getArduinoData(args)
+
     if args.realtime:
         logging.info("running Carrier Realtime Data collection")
         output_file = "../CarrierRealTimeData.json"
         # since the Carrier login is async, I can do the arduino collection while waiting
         getDataTask = asyncio.create_task (getCarrierData(args))
-
-        arduino_data = getArduinoData(args)
-
         carrier_data = await getDataTask
         if len(carrier_data) != 1:
             logging.error("Carrier returned %d systems\n" % len(carrier_data))
@@ -58,9 +57,6 @@ async def main():
     elif args.daily:
         logging.info("running Carrier Daily Data collection")
         output_file = "../CarrierDailyData.json"
-        # Carrier provides data for YESTERDAY. so wait to collect it until the next day
-        # and assume the cron is run at about 23:59
-        arduino_data = getArduinoData(args)
 
         # wait until just past midnight
         now = datetime.datetime.now()

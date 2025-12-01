@@ -73,7 +73,7 @@ def getArduinoData(args) -> Dict:
     if "file" in args and args.file:
         logging.debug("reading CSV data from: %s" % args.file[0])
         infile = open(args.file, newline="")
-        sensor_dict = parseArduinoToDict (infile)
+        sensor_dict = parseArduinoToDict (infile, forceNumbers=args.numeric)
         # don't know which map to use so assume LGR
         collected_data.update(remapFields(args.realtime, map100, "file", sensor_dict))
     else:
@@ -88,7 +88,7 @@ def getArduinoData(args) -> Dict:
             for ip in sensor_ips:
                 url = 'http://' + ip + '/getRawData'
                 logging.debug (url)
-                sensor_dict = parseArduinoToDict (getWebFileObj(url))
+                sensor_dict = parseArduinoToDict (getWebFileObj(url), forceNumbers=args.numeric)
                 logging.debug (json.dumps (sensor_dict, indent=2, ensure_ascii=False))
 
                 # logging.debug("got sensor_dict: %s a (%s)" % (sensor_dict, type(sensor_dict)))
@@ -121,6 +121,7 @@ def main():
     parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
     parser.add_argument('file', nargs='?', help="name of CSV data file to use")
     parser.add_argument("-i", "--ipaddr", nargs=1, type=isIPaddr)
+    parser.add_argument( "-n", "--numeric", action="store_true", help="force numbers in output dict" )
     parser.add_argument( "-R", "--realtime", action="store_true", help="get the realtime fields" )
     parser.add_argument( "-D", "--daily", action="store_true", help="get the Daily Fields" )
     args = parser.parse_args()

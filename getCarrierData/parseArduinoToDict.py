@@ -5,7 +5,7 @@ parseArduinoToDict.py
 Read CSV from my Arduino sensor and return a mapping from NAME -> row-by-column-name
 so you can do things like:
 
-    rows = parseArduinoToDict(open("input.csv"))
+    rows = parseArduinoToDict(open("input.csv"), forceNumbers)
     print(rows["Inside"]["LAST"])
 
 sample data:
@@ -20,7 +20,7 @@ Behavior:
 - The NAME column is used as the key for the top-level mapping. It should be the first column.
 - If there are multiple rows with the same NAME, the mapping value becomes a list of row dicts (in encountered order).
 - all rows must have the same number of columns
-- Numeric-looking values are converted to int or float when possible.
+- Numeric-looking values are converted to int or float when possible IF the optional forceNumbers argument is True
 - Can read from a filename or stdin when used as a script; prints JSON output.
 
 Usage (as library):

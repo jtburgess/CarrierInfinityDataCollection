@@ -27,17 +27,20 @@ async def main():
     )
     # Example argument; add more as needed
     parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
+    parser.add_argument( "-n", "--numeric", action="store_true", help="force numbers in output dict" )
     parser.add_argument( "-R", "--realtime", action="store_true", help="get the realtime fields" )
     parser.add_argument( "-D", "--daily", action="store_true", help="get the Daily Fields" )
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, style="{",
-        format="{asctime}-{levelname}-{name}: {message}",
-        datefmt="%y-%m-%d %H:%M:%S",
-        )
     if args.debug:
-        logging.setLevel("DEBUG")
+        logging.basicConfig(level=logging.DEBUG)
         logging.debug("Debug mode enabled.")
+    else:
+        logging.basicConfig( level=logging.INFO, style="{",
+            format="{asctime}-{levelname}-{name}: {message}",
+            datefmt="%y-%m-%d %H:%M:%S",
+        )
+
     logging.debug ("Args=[ %s ]" % args)
 
     ##### this is the business logic
@@ -81,14 +84,14 @@ async def main():
 
     if args.debug:
         logging.debug ("arduino data: " + str(arduino_data))
-        logging.debug ("selected carrier data: " + str(carrier_data[0].__repr__()))
+        logging.debug ("selected carrier data: " + str(carrier_data.__repr__()))
 
     collected_data = {**arduino_data, **carrier_data}
-    logging.debug ("combined data: " + str(collected_data))
+    logging.debug ("combined data: " + json.dumps(collected_data))
 
     # write the collected data to a file for comparison
     f = open(output_file, "a")
-    f.write (str(collected_data) + '\n')
+    f.write (json.dumps(collected_data) + '\n')
     f.close ()
 
     exit(0)

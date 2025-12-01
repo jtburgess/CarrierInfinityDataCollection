@@ -75,7 +75,16 @@ def selectRealTimeData(collected_data : Dict[str, Any]) -> Dict[str, Any]:
     status = collected_data['status']
     for field in status_fields:
         try:
-          selected_data.__setitem__ (field[1], status[field[0]])
+          if field[1] == "humidifier_on" :
+            # json doesnt like python's True/False
+            if status[field[0]] == True:
+              selected_data.__setitem__ (field[1], "on")
+            elif status[field[0]] == False:
+              selected_data.__setitem__ (field[1], "off")
+            else:
+              raise ValueError("humidifier_on is not True/False")
+          else:
+            selected_data.__setitem__ (field[1], status[field[0]])
         except:
           logging.warning("carrier status is missing %s" % (field[0]))
 
@@ -136,6 +145,8 @@ async def main():
     )
     # Example argument; add more as needed
     parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
+    # carrier already supplies numerics, so this is unnecessary -- except for concistency
+    parser.add_argument( "-n", "--numeric", action="store_true", help="force numbers in output dict" )
     parser.add_argument( "-r", "--raw", action="store_true", help="Just dump the raw data" )
     parser.add_argument( "-R", "--realtime", action="store_true", help="get the realtime fields" )
     parser.add_argument( "-D", "--daily", action="store_true", help="get the Daily Fields" )

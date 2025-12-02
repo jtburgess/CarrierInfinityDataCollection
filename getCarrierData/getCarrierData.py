@@ -53,7 +53,7 @@ status_fields = [
   [ 'outdoor_temperature', 'out_temp' ],
   [ 'airflow_cfm', 'airflow_cfm' ],
   [ 'blower_rpm', 'blower_rpm' ],
-  [ 'humidifier_on', 'humidifier_on' ],
+  [ 'humidifier_on', 'humidifier' ],
   [ 'outdoor_unit_operational_status', 'outdoor_status' ],
   [ 'indoor_unit_operational_status', 'indoor_status' ],
 ]

@@ -136,7 +136,10 @@ def main():
     if isinstance(args.file, (type(None), str)) is False:
         parser.error("Only one file argument accepted")
 
-    if not (args.realtime or args.daily):
+    if args.realtime and args.daily:
+        logging.error ("You must specify only ONE of realtime and daily")
+        exit(1)
+    elif not (args.realtime or args.daily):
         logging.error ("You must specify either --realtime or --daily")
         exit(1)
 

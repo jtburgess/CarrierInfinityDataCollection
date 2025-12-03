@@ -178,6 +178,9 @@ async def main():
     if args.raw:
         #print (str(collected_data) + '\n')
         selected_data = collected_data
+    elif args.realtime and args.daily:
+        logging.error ("You must specify only ONE of realtime and daily")
+        exit(1)
     elif args.realtime:
         selected_data = selectRealTimeData(collected_data.__repr__())
     elif args.daily:

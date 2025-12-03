@@ -46,7 +46,10 @@ async def main():
     ##### this is the business logic
     arduino_data = getArduinoData(args)
 
-    if args.realtime:
+    if args.realtime and args.daily:
+        logging.error ("You must specify only ONE of realtime and daily")
+        exit(1)
+    elif args.realtime:
         logging.info("running Carrier Realtime Data collection")
         output_file = "../CarrierRealTimeData.json"
         # since the Carrier login is async, I can do the arduino collection while waiting

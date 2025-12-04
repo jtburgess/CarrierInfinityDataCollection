@@ -9,6 +9,16 @@ from sys import exit, stdout, exc_info
 DataDir = "../"
 ExcelFile = 'carrier infinity usage stats.xlsx'
 
+# fast efficient way to turn numbers as strings into int or float as needed
+def str2num(s):
+  try:
+      return int(s)
+  except:
+    try:
+      return float(s)
+    except:
+      return s
+
 def loadJsonToExcel (jsonFile: str, sheet_name: str):
   logging.debug (f"Read Json file {DataDir}{jsonFile}")
 
@@ -16,18 +26,32 @@ def loadJsonToExcel (jsonFile: str, sheet_name: str):
   logging.debug (f"worksheets in {ExcelFile} are: {wb.sheetnames}")
 
   ws = wb[sheet_name]
-  logging.debug (f"ws {sheet_name} title: {ws.title}, has {ws.max_row} rows")
+  logging.info (f"sheet {ws.title} has {ws.max_row} rows to start")
 
   # the list of fields we want to collect from the JSON is in row 1
   field_list = list(next(ws.iter_rows(values_only=True, max_row=1)))
-  logging.debug(f"field names in row 1: {field_list}")
+  num_fields = len(field_list)
+  logging.debug(f"{num_fields} field names in row 1: {field_list}")
 
+  # now load all the saved data into excel, one row at a time, arranged by the field_list columns
   with open(DataDir + jsonFile, 'r') as jf:
-    for jline in jf:
-      jsonData = json.loads ( jline )
-  logging.debug (f"read {len(jsonData)} rows")
+    new_line_count = 0
+    for line in jf:
+      new_row = [None] * num_fields
+      input_dict = json.loads(line)
+      new_line_count +=1
+      i=0
+      for field in field_list:
+        if field in input_dict:
+          new_row[i] = str2num ( input_dict[field] )
+        else:
+          logging.error(f"line {new_line_count} in the input is missing field {field}")
+        i+=1
+      logging.debug(f"new row #{new_line_count}: {new_row}")
+      ws.append(new_row)
 
-  wb.save()
+  wb.save(DataDir + ExcelFile)
+  logging.info (f"appended {new_line_count} rows")
 
 ##########
 def main():

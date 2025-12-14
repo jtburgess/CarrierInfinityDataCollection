@@ -2,14 +2,23 @@ import argparse
 import datetime
 import json
 import logging
+import re
 from openpyxl import load_workbook
 from sys import exit, stdout, exc_info
+import traceback
 
 # DataDir = '/Users/jburgess/Library/CloudStorage/Dropbox/CarrierDataCollection/'
 DataDir = "../"
 ExcelFile = 'carrier infinity usage stats.xlsx'
 
-# fast efficient way to turn numbers as strings into int or float as needed
+# all dates are "yyyy-mm-dd" e.g. "2025-12-13"
+datePattern = r'"*\d{4}[/-]\d{1,2}[/-]\d{1,2}"*'
+dateRe = re.compile (datePattern)
+# all times are "hh:mm:ss" e.g. "12:16:23"
+timePattern = r'"*\d{1,2}:\d{1,2}:\d{1,2}"*'
+timeRe = re.compile (timePattern)
+
+# fast efficient way to turn numbers as strings into int or float or date or time
 def str2num(s):
   try:
       return int(s)
@@ -17,7 +26,24 @@ def str2num(s):
     try:
       return float(s)
     except:
-      return s
+      try:
+        match = dateRe.fullmatch(s)
+        if match:
+          logging.debug (f"str2num date ({s})")
+          return datetime.datetime.strptime(s, "%Y-%m-%d").date()
+        else:
+          match = timeRe.fullmatch(s)
+          if match:
+            logging.debug (f"str2num time ({s})")
+            return datetime.datetime.strptime(s, "%H:%M:%S").time()
+          else:
+            return(s)
+      except:
+        excType, excValue, excTraceback = exc_info()
+        lines = traceback.format_exception(excType, excValue, excTraceback)
+        logging.warning (f"str2num: triple exception. ({s})\n\tType={excType}, Value={excValue}")
+        logging.debug( "".join( lines ))
+        return s
 
 def loadJsonToExcel (jsonFile: str, sheet_name: str):
   logging.debug (f"Read Json file {DataDir}{jsonFile}")
@@ -40,13 +66,16 @@ def loadJsonToExcel (jsonFile: str, sheet_name: str):
       new_row = [None] * num_fields
       input_dict = json.loads(line)
       new_line_count +=1
-      i=0
+      i = -1 # because of the PRE-increment
       for field in field_list:
+        i+=1
+        if (field == None) or (field == "") or (field[0] == '*'):
+          continue
         if field in input_dict:
           new_row[i] = str2num ( input_dict[field] )
         else:
           logging.error(f"line {new_line_count} in the input is missing field {field}")
-        i+=1
+
       logging.debug(f"new row #{new_line_count}: {new_row}")
       ws.append(new_row)
 

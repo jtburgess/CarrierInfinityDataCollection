@@ -106,9 +106,9 @@ daily_status_fields = [
 daily_energy_fields = [
   [ 'id', 'id' ],
   [ 'cooling', 'cool_btu' ],
-  [ 'hp_heat', 'heat_btu' ],
+  [ 'hp_heat', 'heat_kWh' ],
   [ 'fan', 'hp_fan' ],
-  [ 'gas', 'furnace_btu' ],
+  [ 'gas', 'furnace_gal' ],
   [ 'fan_gas', 'furnace_fan' ],
   [ 'loop_pump', 'loop_pump' ],
 ]

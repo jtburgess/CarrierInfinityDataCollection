@@ -177,7 +177,8 @@ async def main():
 
     if args.raw:
         #print (str(collected_data) + '\n')
-        selected_data = collected_data
+        # selected_data = collected_data[0]
+        selected_data = collected_data.__repr__()
     elif args.realtime and args.daily:
         logging.error ("You must specify only ONE of realtime and daily")
         exit(1)

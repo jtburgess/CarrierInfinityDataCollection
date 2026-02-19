@@ -38,7 +38,6 @@ python3 getCarrierData/loadJSONtoExcel.py "$@" --Daily
 
 echo continue? ; read x
 
-cd $Me
 # append the data to the archive, and empty the new data files
 for type in Daily RealTime
 do

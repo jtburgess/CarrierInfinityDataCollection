@@ -14,7 +14,7 @@ import traceback
 # Above are inflexible and not correct on both systems.
 # so just use the current directory.
 DataDir = "./"
-ExcelFile = 'carrier infinity usage stats.xlsm'
+ExcelFile = 'carrier infinity usage stats.xlsx'
 
 # all dates are "yyyy-mm-dd" e.g. "2025-12-13"
 datePattern = r'"*\d{4}[/-]\d{1,2}[/-]\d{1,2}"*'

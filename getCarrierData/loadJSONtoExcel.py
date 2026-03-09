@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import datetime
 import json
@@ -8,7 +9,11 @@ from sys import exit, stdout, exc_info
 import traceback
 
 # DataDir = '/Users/jburgess/Library/CloudStorage/Dropbox/CarrierDataCollection/'
-DataDir = "../"
+# on MY mac, this is an symlink to the above; on the MacMini, this is IT
+# DataDir = '/Users/jburgess/Dropbox/CarrierDataCollection/'
+# Above are inflexible and not correct on both systems.
+# so just use the current directory.
+DataDir = "./"
 ExcelFile = 'carrier infinity usage stats.xlsx'
 
 # all dates are "yyyy-mm-dd" e.g. "2025-12-13"
@@ -89,8 +94,8 @@ def main():
   )
   # Example argument; add more as needed
   parser.add_argument( "-d", "--debug", action="store_true", help="Enable debug output" )
-  parser.add_argument( "-R", "--realtime", action="store_true", help="Load JSON Realtime data" )
-  parser.add_argument( "-D", "--daily", action="store_true", help="Load JSON Daily Fields" )
+  parser.add_argument( "-R", "--RealTime", action="store_true", help="Load JSON RealTime data" )
+  parser.add_argument( "-D", "--Daily", action="store_true", help="Load JSON Daily Fields" )
   args = parser.parse_args()
 
   if args.debug:
@@ -100,15 +105,15 @@ def main():
     logging.basicConfig(level=logging.INFO)
   logging.debug ("Args=[ %s ]" % args)
 
-  if args.realtime and args.daily:
-    logging.error ("You must specify only ONE of realtime and daily")
+  if args.RealTime and args.Daily:
+    logging.error ("You must specify only ONE of RealTime and Daily")
     exit(1)
-  elif args.realtime:
+  elif args.RealTime:
     loadJsonToExcel ( 'CarrierRealTimeData.json', 'RealTime' )
-  elif args.daily:
+  elif args.Daily:
     loadJsonToExcel ( 'CarrierDailyData.json', 'Daily' )
   else:
-    logging.error ("You must specify either --realtime or --daily")
+    logging.error ("You must specify either --RealTime or --Daily")
     exit(1)
 
 if __name__ == "__main__":
